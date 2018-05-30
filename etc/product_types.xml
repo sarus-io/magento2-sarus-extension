@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Catalog:etc/product_types.xsd">
+    <type name="sarus" label="Sarus Product" modelInstance="Sarus\Sarus\Model\Product\Type" indexPriority="30" sortOrder="45">
+        <customAttributes>
+            <attribute name="is_real_product" value="false"/>
+        </customAttributes>
+    </type>
+</config>
