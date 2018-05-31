@@ -67,7 +67,10 @@ class InstallData implements InstallDataInterface
             'special_from_date',
             'special_to_date',
             'minimal_price',
-            'tax_class_id'
+            'tax_class_id',
+            'cost',
+            'tier_price',
+            'weight',
         ];
         foreach ($attributes as $attributeCode) {
             $applyTo = explode(',', $categorySetup->getAttribute(Product::ENTITY, $attributeCode, 'apply_to'));
