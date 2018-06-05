@@ -5,11 +5,14 @@
  */
  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Sarus\Sarus\Api\Data\QuoteItemAttributeInterface" type="Sarus\Sarus\Model\Quote\Item\Attribute" />
-    <preference for="Sarus\Sarus\Api\QuoteItemAttributeRepositoryInterface" type="Sarus\Sarus\Model\Quote\Item\Attribute" />
-    <preference for="Sarus\Sarus\Api\QuoteItemAttributeManagementInterface" type="Sarus\Sarus\Service\Quote\Item\AttributeManagement" />
-
     <preference for="Sarus\Sarus\Api\Data\OrderItemAttributeInterface" type="Sarus\Sarus\Model\Order\Item\Attribute" />
     <preference for="Sarus\Sarus\Api\OrderItemAttributeRepositoryInterface" type="Sarus\Sarus\Service\Order\Item\AttributeRepository" />
     <preference for="Sarus\Sarus\Api\OrderItemAttributeManagementInterface" type="Sarus\Sarus\Service\Order\Item\AttributeManagement" />
+
+    <type name="Magento\Sales\Api\OrderItemRepositoryInterface">
+        <plugin name="sarus_order_item" type="Sarus\Sarus\Plugin\Order\ItemRepository"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="sarus_order_item" type="Sarus\Sarus\Plugin\Quote\Item\ToOrderItem"/>
+    </type>
 </config>

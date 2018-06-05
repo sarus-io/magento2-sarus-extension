@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="sarus" translate="label" sortOrder="450">
+            <label>Sarus</label>
+        </tab>
+        <section id="sarus" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>General Configuration</label>
+            <tab>sarus</tab>
+            <resource>Sarus_Sarus::system_config</resource>
+
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>General</label>
+
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="my_courses" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>My Courses Enabled</label>
+                    <comment><![CDATA[A section called My Courses will appear under My Account. This section lists all courses that have been purchased by a customer.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="api" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>API</label>
+
+                <field id="auth_token" translate="label comment" type="obscure" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Authorization Token</label>
+                    <comment><![CDATA[The Authorization Token for API access is supplied by Sarus.]]></comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="sarus/general/enabled">1</field>
+                    </depends>
+                </field>
+
+                <field id="max_time_resend" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Maximum Resend Attempts</label>
+                    <comment>The maximum number of times failed submissions will attempt to be sent. Leave empty or enter 0 for unlimited attempts.</comment>
+                    <depends>
+                        <field id="sarus/general/enabled">1</field>
+                    </depends>
+                </field>
+
+                <field id="debug" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Debug Mode</label>
+                    <comment><![CDATA[Enabling this option will log all API requests to a log file named sarus/api-{Y-m}.log.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

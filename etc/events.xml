@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_item_qty_set_after">
+        <observer name="sarus_limit_qty" instance="Sarus\Sarus\Observer\Quote\Item\SetQtyAfter" />
+    </event>
+    <event name="sales_order_place_after">
+        <observer name="sarus_register_course" instance="Sarus\Sarus\Observer\Order\PlaceAfter" />
+    </event>
+    <event name="catalog_product_delete_before">
+        <observer name="sarus_unlinked_course" instance="Sarus\Sarus\Observer\Catalog\ProductDeleteBefore" />
+    </event>
+</config>

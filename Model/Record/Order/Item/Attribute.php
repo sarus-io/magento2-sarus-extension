@@ -5,15 +5,16 @@
 
 namespace Sarus\Sarus\Model\Record\Order\Item;
 
-use Sarus\Sarus\Model\ResourceModel\Order\Item\Attribute as ResourceOrderItemAttribute;
+use Magento\Framework\Model\AbstractModel;
+use Sarus\Sarus\Model\ResourceModel\Order\Item\Attribute as OrderItemAttributeResource;
 
-class Attribute extends \Magento\Framework\Model\AbstractModel
+class Attribute extends AbstractModel
 {
     /**
      * @return void
      */
     protected function _construct()
     {
-        $this->_init(ResourceOrderItemAttribute::class);
+        $this->_init(OrderItemAttributeResource::class);
     }
 }

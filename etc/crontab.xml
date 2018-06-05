@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="sarus_send_pending_submission" instance="Sarus\Sarus\Cron\SendSubmissions" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="sarus_send_failed_submission" instance="Sarus\Sarus\Cron\ResendSubmissions" method="execute">
+            <schedule>0 * * * *</schedule>
+        </job>
+    </group>
+</config>

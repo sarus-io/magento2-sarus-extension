@@ -11,8 +11,9 @@ use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Ddl\Table;
 
-use Sarus\Sarus\Model\ResourceModel\Quote\Item\Attribute as ResourceQuoteAttribute;
-use Sarus\Sarus\Model\ResourceModel\Order\Item\Attribute as ResourceOrderAttribute;
+use Sarus\Sarus\Model\Record\Submission as SubmissionRecord;
+use Sarus\Sarus\Model\ResourceModel\Submission as SubmissionResource;
+use Sarus\Sarus\Model\ResourceModel\Order\Item\Attribute as OrderAttributeResource;
 
 class InstallSchema implements InstallSchemaInterface
 {
@@ -27,8 +28,8 @@ class InstallSchema implements InstallSchemaInterface
     {
         $setup->startSetup();
 
-        $this->installQuoteItemAttributeTable($setup);
-        $this->installOrderItemAttributeTable($setup);
+        $this->createOrderItemAttributeTable($setup);
+        $this->createSubmissionQueueTable($setup);
 
         $setup->endSetup();
     }
@@ -37,55 +38,10 @@ class InstallSchema implements InstallSchemaInterface
      * @param \Magento\Framework\Setup\SchemaSetupInterface $setup
      * @return void
      */
-    private function installQuoteItemAttributeTable($setup)
+    private function createOrderItemAttributeTable($setup)
     {
         $table = $setup->getConnection()
-            ->newTable($setup->getTable(ResourceQuoteAttribute::TABLE_NAME))
-            ->addColumn(
-                'attribute_id',
-                Table::TYPE_INTEGER,
-                null,
-                ['primary' => true, 'identity' => true, 'unsigned' => true, 'nullable' => false],
-                'Attribute ID'
-            )
-            ->addColumn(
-                'quote_item_id',
-                Table::TYPE_INTEGER,
-                null,
-                ['unsigned' => true, 'nullable' => false],
-                'Quote Item ID'
-            )
-            ->addColumn(
-                'course_uuid',
-                Table::TYPE_TEXT,
-                null,
-                ['nullable' => true],
-                'Sarus Course UUID'
-            )
-            ->addIndex(
-                $setup->getIdxName(ResourceQuoteAttribute::TABLE_NAME, ['quote_item_id'], AdapterInterface::INDEX_TYPE_UNIQUE),
-                ['quote_item_id'],
-                ['type' => AdapterInterface::INDEX_TYPE_UNIQUE]
-            )
-            ->addForeignKey(
-                $setup->getFkName(ResourceQuoteAttribute::TABLE_NAME, 'quote_item_id', 'quote_item', 'item_id'),
-                'quote_item_id',
-                $setup->getTable('quote_item'),
-                'item_id',
-                Table::ACTION_CASCADE
-            )
-            ->setComment('Sarus Quote Item Attribute Table');
-        $setup->getConnection()->createTable($table);
-    }
-
-    /**
-     * @param \Magento\Framework\Setup\SchemaSetupInterface $setup
-     * @return void
-     */
-    private function installOrderItemAttributeTable($setup)
-    {
-        $table = $setup->getConnection()
-            ->newTable($setup->getTable(ResourceOrderAttribute::TABLE_NAME))
+            ->newTable($setup->getTable(OrderAttributeResource::TABLE_NAME))
             ->addColumn(
                 'attribute_id',
                 Table::TYPE_INTEGER,
@@ -108,18 +64,80 @@ class InstallSchema implements InstallSchemaInterface
                 'Sarus Course UUID'
             )
             ->addIndex(
-                $setup->getIdxName(ResourceOrderAttribute::TABLE_NAME, ['order_item_id'], AdapterInterface::INDEX_TYPE_UNIQUE),
+                $setup->getIdxName(OrderAttributeResource::TABLE_NAME, ['order_item_id'], AdapterInterface::INDEX_TYPE_UNIQUE),
                 ['order_item_id'],
                 ['type' => AdapterInterface::INDEX_TYPE_UNIQUE]
             )
             ->addForeignKey(
-                $setup->getFkName(ResourceOrderAttribute::TABLE_NAME, 'order_item_id', 'sales_order_item', 'item_id'),
+                $setup->getFkName(OrderAttributeResource::TABLE_NAME, 'order_item_id', 'sales_order_item', 'item_id'),
                 'order_item_id',
                 $setup->getTable('sales_order_item'),
                 'item_id',
                 Table::ACTION_CASCADE
             )
             ->setComment('Sarus Order Item Attribute Table');
+        $setup->getConnection()->createTable($table);
+    }
+
+    /**
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $setup
+     * @return void
+     */
+    private function createSubmissionQueueTable(SchemaSetupInterface $setup)
+    {
+        $table = $setup->getConnection()->newTable(
+            $setup->getTable(SubmissionResource::TABLE_NAME)
+        )->addColumn(
+            'entity_id',
+            Table::TYPE_INTEGER,
+            null,
+            ['identity' => true, 'primary' => true, 'unsigned' => true, 'nullable' => false],
+            'Id'
+        )->addColumn(
+            'store_id',
+            Table::TYPE_INTEGER,
+            null,
+            ['unsigned' => true, 'nullable' => false],
+            'Store ID'
+        )->addColumn(
+            'request',
+            Table::TYPE_TEXT,
+            null,
+            ['nullable' => false, 'default' => ''],
+            'Serialized Request'
+        )->addColumn(
+            'counter',
+            Table::TYPE_SMALLINT,
+            null,
+            ['unsigned' => true, 'nullable' => false, 'default' => 0],
+            'Counter'
+        )->addColumn(
+            'status',
+            Table::TYPE_TEXT,
+            10,
+            ['nullable' => false, 'default' => SubmissionRecord::STATUS_PENDING],
+            'Status'
+        )->addColumn(
+            'error_message',
+            Table::TYPE_TEXT,
+            null,
+            ['nullable' => true],
+            'Error Message'
+        )->addColumn(
+            'create_at',
+            Table::TYPE_TIMESTAMP,
+            null,
+            ['nullable' => false, 'default' => Table::TIMESTAMP_INIT],
+            'Creating Time'
+        )->addColumn(
+            'submit_at',
+            Table::TYPE_TIMESTAMP,
+            null,
+            ['nullable' => true, 'default' => Table::TIMESTAMP_UPDATE],
+            'Submission Time'
+        )->setComment(
+            'Sarus Submission Queue'
+        );
         $setup->getConnection()->createTable($table);
     }
 }

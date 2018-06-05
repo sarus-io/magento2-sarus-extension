@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="sarus.customer.courses" template="Sarus_Sarus::customer/courses.phtml" cacheable="false">
+                <arguments>
+                    <argument name="viewModel" xsi:type="object">Sarus\Sarus\ViewModel\CustomerCourses</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

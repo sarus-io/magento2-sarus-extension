@@ -8,9 +8,10 @@ namespace Sarus\Sarus\Service\Order\Item;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\CouldNotDeleteException;
+use Sarus\Sarus\Api\OrderItemAttributeRepositoryInterface;
 use Sarus\Sarus\Api\Data\OrderItemAttributeInterface;
 
-class AttributeRepository implements \Sarus\Sarus\Api\OrderItemAttributeRepositoryInterface
+class AttributeRepository implements OrderItemAttributeRepositoryInterface
 {
     /**
      * @var \Sarus\Sarus\Api\Data\OrderItemAttributeInterfaceFactory

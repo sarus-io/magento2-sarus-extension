@@ -6,8 +6,9 @@
 namespace Sarus\Sarus\Model\Order\Item;
 
 use Magento\Framework\DataObject;
+use Sarus\Sarus\Api\Data\OrderItemAttributeInterface;
 
-class Attribute extends DataObject implements \Sarus\Sarus\Api\Data\OrderItemAttributeInterface
+class Attribute extends DataObject implements OrderItemAttributeInterface
 {
     /**
      * @return int

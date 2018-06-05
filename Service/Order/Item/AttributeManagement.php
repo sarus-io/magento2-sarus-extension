@@ -7,8 +7,9 @@ namespace Sarus\Sarus\Service\Order\Item;
 
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderItemInterface;
+use Sarus\Sarus\Api\OrderItemAttributeManagementInterface;
 
-class AttributeManagement implements \Sarus\Sarus\Api\OrderItemAttributeManagementInterface
+class AttributeManagement implements OrderItemAttributeManagementInterface
 {
     /**
      * @var \Sarus\Sarus\Api\OrderItemAttributeRepositoryInterface
@@ -44,7 +45,7 @@ class AttributeManagement implements \Sarus\Sarus\Api\OrderItemAttributeManageme
      * @param \Magento\Sales\Api\Data\OrderItemInterface $orderItem
      * @return \Sarus\Sarus\Api\Data\OrderItemAttributeInterface
      */
-    public function getForOrderItem($orderItem)
+    public function getForOrderItem(OrderItemInterface $orderItem)
     {
         $orderItemAttributes = $orderItem->getExtensionAttributes() ?: $this->extensionAttributesFactory->create(OrderItemInterface::class);
         $orderItem->setExtensionAttributes($orderItemAttributes);
@@ -64,7 +65,7 @@ class AttributeManagement implements \Sarus\Sarus\Api\OrderItemAttributeManageme
     }
 
     /**
-     * @param $orderItemId
+     * @param int $orderItemId
      * @return \Sarus\Sarus\Api\Data\OrderItemAttributeInterface|null
      */
     private function getByOrderItemId($orderItemId)

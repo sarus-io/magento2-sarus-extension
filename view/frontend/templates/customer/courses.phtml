@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+
+/** @var $block Magento\Framework\View\Element\Template */
+
+/** @var \Sarus\Sarus\ViewModel\CustomerCourses $viewModel */
+$viewModel = $block->getData('viewModel');
+$customerCourses = $viewModel->getCustomerCourses();
+?>
+<ul>
+    <?php if (empty($customerCourses)): ?>
+        <li><?php echo __('No courses available.') ?></li>
+    <?php else: ?>
+        <?php foreach ($customerCourses as $courseData): ?>
+            <li>
+                <h4><?php echo $block->escapeHtml($courseData['title']) ?></h4>
+
+                <img src="<?php echo $viewModel->getCourseImageUrl($courseData) ?>" />
+
+                <?php if (!empty($courseData['description'])): ?>
+                    <p><?php echo $courseData['description'] ?></p>
+                <?php endif; ?>
+
+                <?php if (!empty($courseData['url'])): ?>
+                    <div>
+                        <a class="btn" target="_blank" href="<?php echo $courseData['url'] ?>"><?php echo __('Go to Course!') ?></a>
+                    </div>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</ul>
