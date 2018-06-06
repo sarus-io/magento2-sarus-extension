@@ -49,10 +49,39 @@
                     </depends>
                 </field>
 
-                <field id="debug" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="notification_recipient" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Notification Recipients</label>
+                    <comment><![CDATA[This is a comma separated list of email addresses that will receive a notification on last failed Sarus request. If no notifications are desired, leave this field blank.]]></comment>
+                    <depends>
+                        <field id="sarus/general/enabled">1</field>
+                    </depends>
+                </field>
+
+                <field id="notification_sender" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Notification Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="sarus/general/enabled">1</field>
+                        <field negative="1" separator="," id="notification_recipient">,</field>
+                    </depends>
+                </field>
+
+                <field id="notification_template" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Notification Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="sarus/general/enabled">1</field>
+                        <field negative="1" separator="," id="notification_recipient">,</field>
+                    </depends>
+                </field>
+
+                <field id="debug" translate="label comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Debug Mode</label>
                     <comment><![CDATA[Enabling this option will log all API requests to a log file named sarus/api-{Y-m}.log.]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="sarus/general/enabled">1</field>
+                    </depends>
                 </field>
             </group>
         </section>

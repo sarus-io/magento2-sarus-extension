@@ -14,6 +14,8 @@
             <api>
                 <auth_token backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <max_time_resend>3</max_time_resend>
+                <notification_sender>general</notification_sender>
+                <notification_template>sarus_api_notification_template</notification_template>
                 <log_filename>log/sarus/api.log</log_filename>
             </api>
         </sarus>

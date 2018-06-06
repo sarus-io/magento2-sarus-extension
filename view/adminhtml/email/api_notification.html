@@ -1,0 +1,24 @@
+<!--
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+-->
+<!--@subject {{trans "Sarus Fail Notification"}} @-->
+
+<h3>Magento to Sarus status - Connection to Sarus could not be established</h3>
+<div>
+    {{if user_email}}
+        <span><b>USER EMAIL:</b></span>{{var user_email|escape}}<br>
+    {{/if}}
+
+    <span><b>ENDPOINT:</b></span>{{var endpoint|escape}}<br>
+
+    {{if response_code}}
+        <span><b>RESPONSE:</b></span>
+        <ul>
+            <li>Response Code: {{var response_code|escape}}</li>
+            <li>Response Message: {{var response_message|escape}}</li>
+            <li>Response Body: {{var response_body|escape}}</li>
+        </ul>
+    {{/if}}
+</div>

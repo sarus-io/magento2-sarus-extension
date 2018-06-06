@@ -25,16 +25,16 @@ class ResendSubmissions
     /**
      * @param \Sarus\Sarus\Model\Config\General $configGeneral
      * @param \Magento\Store\Api\StoreRepositoryInterface $storeRepository
-     * @param \Sarus\Sarus\Service\Queue $queue
+     * @param \Sarus\Sarus\Service\QueueManager $queueManager
      */
     public function __construct(
         \Sarus\Sarus\Model\Config\General $configGeneral,
         \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
-        \Sarus\Sarus\Service\Queue $queue
+        \Sarus\Sarus\Service\QueueManager $queueManager
     ) {
         $this->configGeneral = $configGeneral;
         $this->storeRepository = $storeRepository;
-        $this->queueManager = $queue;
+        $this->queueManager = $queueManager;
     }
 
     /**

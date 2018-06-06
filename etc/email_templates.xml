@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="sarus_api_notification_template" label="Sarus Fail Notification Template" file="api_notification.html" type="html" module="Sarus_Sarus" area="adminhtml"/>
+</config>

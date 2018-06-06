@@ -12,11 +12,17 @@ class Api
 {
     const XML_PATH_AUTH_TOKEN = 'sarus/api/auth_token';
 
-    const XML_PATH_DEBUG = 'sarus/api/debug';
-
     const XML_PATH_LOG_FILENAME = 'sarus/api/log_filename';
 
     const XML_PATH_MAX_TIME_RESEND = 'sarus/api/max_time_resend';
+
+    const XML_PATH_NOTIFICATION_RECIPIENT = 'sarus/api/notification_recipient';
+
+    const XML_PATH_NOTIFICATION_SENDER = 'sarus/api/notification_sender';
+
+    const XML_PATH_NOTIFICATION_TEMPLATE = 'sarus/api/notification_template';
+
+    const XML_PATH_DEBUG = 'sarus/api/debug';
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -56,6 +62,35 @@ class Api
     public function getMaxTimeResend($storeId = null)
     {
         return (int)$this->scopeConfig->getValue(self::XML_PATH_MAX_TIME_RESEND, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int|string|null $storeId
+     * @return string[]
+     */
+    public function getNotificationRecipients($storeId = null)
+    {
+        $recipients = $this->scopeConfig->getValue(self::XML_PATH_NOTIFICATION_RECIPIENT, ScopeInterface::SCOPE_STORE, $storeId);
+        $recipients = !empty($recipients) ? explode(',', $recipients) : [];
+        return array_map('trim', $recipients);
+    }
+
+    /**
+     * @param int|null $storeId
+     * @return string
+     */
+    public function getNotificationSender($storeId = null)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_NOTIFICATION_SENDER, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int|null $storeId
+     * @return string
+     */
+    public function getNotificationTemplate($storeId = null)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_NOTIFICATION_TEMPLATE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
