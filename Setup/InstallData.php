@@ -7,9 +7,9 @@ namespace Sarus\Sarus\Setup;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-
+use Magento\Catalog\Model\ResourceModel\Eav\Attribute as CatalogEavAttribute;
 use Magento\Catalog\Model\Product;
-use Sarus\Sarus\Model\Product\Type as SarusType;
+use Sarus\Sarus\Helper\Product as SarusProduct;
 
 class InstallData implements InstallDataInterface
 {
@@ -48,38 +48,8 @@ class InstallData implements InstallDataInterface
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        $this->addProductType($setup);
         $this->createSarusAttributeSet($setup);
         $this->crateSarusProductAttribute($setup);
-    }
-
-    /**
-     * @param \Magento\Framework\Setup\ModuleDataSetupInterface $setup
-     * @return void
-     */
-    private function addProductType($setup)
-    {
-        $categorySetup = $this->categorySetupFactory->create(['setup' => $setup]);
-
-        $attributes = [
-            'price',
-            'special_price',
-            'special_from_date',
-            'special_to_date',
-            'minimal_price',
-            'tax_class_id',
-            'cost',
-            'tier_price',
-            'weight',
-        ];
-        foreach ($attributes as $attributeCode) {
-            $applyTo = explode(',', $categorySetup->getAttribute(Product::ENTITY, $attributeCode, 'apply_to'));
-
-            if (!in_array(SarusType::TYPE_CODE, $applyTo, true)) {
-                $applyTo[] = SarusType::TYPE_CODE;
-                $categorySetup->updateAttribute(Product::ENTITY, $attributeCode, 'apply_to', implode(',', $applyTo));
-            }
-        }
     }
 
     /**
@@ -95,7 +65,7 @@ class InstallData implements InstallDataInterface
         $attributeSetId = $categorySetup->getDefaultAttributeSetId($entityTypeId);
 
         $attributeSet = $this->attributeSetFactory->create();
-        $attributeSet->setAttributeSetName(SarusType::ATTRIBUTE_SET_NAME);
+        $attributeSet->setAttributeSetName(SarusProduct::ATTRIBUTE_SET_NAME);
         $attributeSet->setEntityTypeId($entityTypeId);
         $attributeSet->setSortOrder(200);
 
@@ -115,10 +85,10 @@ class InstallData implements InstallDataInterface
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         $eavSetup->addAttribute(
             Product::ENTITY,
-            SarusType::ATTRIBUTE_COURSE_UUID,
+            SarusProduct::ATTRIBUTE_COURSE_UUID,
             [
                 'label' => 'Sarus Course UUID',
-                'global' => \Magento\Catalog\Model\ResourceModel\Eav\Attribute::SCOPE_GLOBAL,
+                'global' => CatalogEavAttribute::SCOPE_GLOBAL,
                 'type' => 'varchar',
                 'input' => 'text',
                 'user_defined' => true,
@@ -130,9 +100,9 @@ class InstallData implements InstallDataInterface
 
         $eavSetup->addAttributeToSet(
             Product::ENTITY,
-            SarusType::ATTRIBUTE_SET_NAME,
+            SarusProduct::ATTRIBUTE_SET_NAME,
             'Product Details',
-            SarusType::ATTRIBUTE_COURSE_UUID,
+            SarusProduct::ATTRIBUTE_COURSE_UUID,
             25
         );
     }

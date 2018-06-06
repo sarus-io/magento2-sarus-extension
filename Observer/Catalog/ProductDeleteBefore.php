@@ -7,7 +7,7 @@ namespace Sarus\Sarus\Observer\Catalog;
 
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
-use Sarus\Sarus\Model\Product\Type as SarusProduct;
+use Sarus\Sarus\Helper\Product as SarusProduct;
 use Sarus\Request\Product\Unlink as SarusUnlink;
 
 class ProductDeleteBefore implements ObserverInterface

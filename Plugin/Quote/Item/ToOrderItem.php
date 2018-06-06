@@ -8,7 +8,7 @@ namespace Sarus\Sarus\Plugin\Quote\Item;
 use Magento\Quote\Api\Data\CartItemInterface;
 use Magento\Quote\Model\Quote\Item\ToOrderItem as QuoteItemToOrderItem;
 use Magento\Quote\Model\Quote\Item as QuoteItem;
-use Sarus\Sarus\Model\Product\Type as SarusProduct;
+use Sarus\Sarus\Helper\Product as SarusProduct;
 use Sarus\Sarus\Api\Data\OrderItemAttributeInterface;
 
 class ToOrderItem
