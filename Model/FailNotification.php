@@ -72,7 +72,7 @@ class FailNotification
      * @return void
      * @throws \Exception
      */
-    protected function sendEmail($storeId, $customerEmail, $recipient, $request, $response = null)
+    private function sendEmail($storeId, $customerEmail, $recipient, $request, $response = null)
     {
         $this->inlineTranslation->suspend();
 
