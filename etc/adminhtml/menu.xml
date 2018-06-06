@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Sarus_Sarus::sarus_menu" parent="Magento_Backend::system" title="Sarus" resource="Sarus_Sarus::sarus_menu" translate="true" module="Sarus_Sarus" sortOrder="10"/>
+        <add id="Sarus_Sarus::queue" parent="Sarus_Sarus::sarus_menu" title="Sarus Queue" action="sarus_sarus/queue/" resource="Sarus_Sarus::queue" module="Sarus_Sarus" sortOrder="20"/>
+    </menu>
+</config>

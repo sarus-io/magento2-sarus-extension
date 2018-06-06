@@ -95,8 +95,8 @@ class InstallSchema implements InstallSchemaInterface
             'Id'
         )->addColumn(
             'store_id',
-            Table::TYPE_INTEGER,
-            null,
+            Table::TYPE_SMALLINT,
+            5,
             ['unsigned' => true, 'nullable' => false],
             'Store ID'
         )->addColumn(
@@ -124,17 +124,23 @@ class InstallSchema implements InstallSchemaInterface
             ['nullable' => true],
             'Error Message'
         )->addColumn(
-            'create_at',
+            'creating_time',
             Table::TYPE_TIMESTAMP,
             null,
             ['nullable' => false, 'default' => Table::TIMESTAMP_INIT],
             'Creating Time'
         )->addColumn(
-            'submit_at',
+            'submission_time',
             Table::TYPE_TIMESTAMP,
             null,
-            ['nullable' => true, 'default' => Table::TIMESTAMP_UPDATE],
+            ['nullable' => true],
             'Submission Time'
+        )->addForeignKey(
+            $setup->getFkName(SubmissionResource::TABLE_NAME, 'store_id', 'store', 'store_id'),
+            'store_id',
+            $setup->getTable('store'),
+            'store_id',
+            Table::ACTION_CASCADE
         )->setComment(
             'Sarus Submission Queue'
         );

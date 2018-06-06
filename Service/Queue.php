@@ -21,6 +21,11 @@ class Queue
     private $submissionRecordFactory;
 
     /**
+     * @var \Sarus\Sarus\Model\ResourceModel\Submission\CollectionFactory
+     */
+    private $submissionCollectionFactory;
+
+    /**
      * @var \Sarus\Sarus\Model\ResourceModel\Submission
      */
     private $submissionResource;
@@ -38,6 +43,7 @@ class Queue
     /**
      * @param \Sarus\Sarus\Model\Config\Api $configApi
      * @param \Sarus\Sarus\Model\Record\SubmissionFactory $submissionRecordFactory
+     * @param \Sarus\Sarus\Model\ResourceModel\Submission\CollectionFactory $submissionCollectionFactory
      * @param \Sarus\Sarus\Model\ResourceModel\Submission $submissionResource
      * @param \Sarus\Sarus\Service\Platform $platform
      * @param \Sarus\Sarus\Model\FailNotification $failNotification
@@ -45,12 +51,14 @@ class Queue
     public function __construct(
         \Sarus\Sarus\Model\Config\Api $configApi,
         \Sarus\Sarus\Model\Record\SubmissionFactory $submissionRecordFactory,
+        \Sarus\Sarus\Model\ResourceModel\Submission\CollectionFactory $submissionCollectionFactory,
         \Sarus\Sarus\Model\ResourceModel\Submission $submissionResource,
         \Sarus\Sarus\Service\Platform $platform,
         \Sarus\Sarus\Model\FailNotification $failNotification
     ) {
         $this->configApi = $configApi;
         $this->submissionRecordFactory = $submissionRecordFactory;
+        $this->submissionCollectionFactory = $submissionCollectionFactory;
         $this->submissionResource = $submissionResource;
         $this->platform = $platform;
         $this->failNotification = $failNotification;
@@ -76,19 +84,22 @@ class Queue
 
     /**
      * @param \Sarus\Sarus\Model\ResourceModel\Submission\Collection $submissionCollection
-     * @return void
+     * @return int
      */
     public function sendSubmissions($submissionCollection)
     {
+        $counter = 0;
         /** @var \Sarus\Sarus\Model\Record\Submission $submissionRecord */
         foreach ($submissionCollection as $submissionRecord) {
-            $this->processSubmissionRecord($submissionRecord);
+            $counter += $this->processSubmissionRecord($submissionRecord) ? 1 : 0;
         }
+
+        return $counter;
     }
 
     /**
      * @param \Sarus\Sarus\Model\Record\Submission $submissionRecord
-     * @return void
+     * @return bool
      */
     private function processSubmissionRecord($submissionRecord)
     {
@@ -99,9 +110,10 @@ class Queue
         try {
             $this->platform->sendRequest($sarusRequest, $storeId);
             $submissionRecord->setStatus(SubmissionRecord::STATUS_DONE);
+            $result = true;
         } catch (SarusHttpException $e) {
             $submissionRecord->setErrorMessage($e->getMessage());
-            $submissionRecord->setStatus(SubmissionRecord::STATUS_ERROR);
+            $submissionRecord->setStatus(SubmissionRecord::STATUS_FAIL);
 
             if (($submissionRecord->getCounter() + 1) === $this->configApi->getMaxTimeResend($storeId)) {
                 $this->failNotification->notify(
@@ -111,11 +123,14 @@ class Queue
                     $e->getResponse()
                 );
             }
+            $result = false;
         }
 
         $counter = $submissionRecord->getCounter() + 1;
         $submissionRecord->setCounter($counter);
         $this->submissionResource->save($submissionRecord);
+
+        return $result;
     }
 
     /**
@@ -133,5 +148,23 @@ class Queue
             : $customerEmail;
 
         return $customerEmail;
+    }
+
+    /**
+     * @param int[] $submissionIds
+     * @return void
+     */
+    public function deleteByIds(array $submissionIds)
+    {
+        /** @var \Sarus\Sarus\Model\ResourceModel\Submission\Collection $submissionCollection */
+        $submissionCollection = $this->submissionCollectionFactory->create();
+        if ($submissionIds) {
+            $submissionCollection->filterSubmissionIds($submissionIds);
+        }
+
+        /** @var \Sarus\Sarus\Model\Record\Submission $submission */
+        foreach ($submissionCollection as $submissionRecord) {
+            $this->submissionResource->delete($submissionRecord);
+        };
     }
 }

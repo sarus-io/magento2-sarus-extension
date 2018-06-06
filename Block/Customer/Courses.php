@@ -3,11 +3,9 @@
  * Copyright © Sarus, LLC. All rights reserved.
  */
 
-namespace Sarus\Sarus\ViewModel;
+namespace Sarus\Sarus\Block\Customer;
 
-use Magento\Framework\View\Element\Block\ArgumentInterface as BlockArgumentInterface;
-
-class CustomerCourses implements BlockArgumentInterface
+class Courses extends \Magento\Framework\View\Element\Template
 {
     /**
      * @var \Sarus\Sarus\Service\Platform
@@ -25,18 +23,23 @@ class CustomerCourses implements BlockArgumentInterface
     private $catalogImageHelper;
 
     /**
+     * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Sarus\Sarus\Service\Platform $platform
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Catalog\Helper\Image $catalogImageHelper
+     * @param array $data
      */
     public function __construct(
+        \Magento\Framework\View\Element\Template\Context $context,
         \Sarus\Sarus\Service\Platform $platform,
         \Magento\Customer\Model\Session $customerSession,
-        \Magento\Catalog\Helper\Image $catalogImageHelper
+        \Magento\Catalog\Helper\Image $catalogImageHelper,
+        array $data = []
     ) {
         $this->platform = $platform;
         $this->customerSession = $customerSession;
         $this->catalogImageHelper = $catalogImageHelper;
+        parent::__construct($context, $data);
     }
 
     /**

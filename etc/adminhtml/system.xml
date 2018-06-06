@@ -26,6 +26,9 @@
                     <label>My Courses Enabled</label>
                     <comment><![CDATA[A section called My Courses will appear under My Account. This section lists all courses that have been purchased by a customer.]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="sarus/general/enabled">1</field>
+                    </depends>
                 </field>
             </group>
 

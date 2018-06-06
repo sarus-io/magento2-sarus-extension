@@ -20,6 +20,16 @@ class Collection extends AbstractCollection
     }
 
     /**
+     * @param int[] $submissionIds
+     * @return $this
+     */
+    public function filterSubmissionIds(array $submissionIds)
+    {
+        $this->addFilter('entity_id', ['in' => $submissionIds], 'public');
+        return $this;
+    }
+
+    /**
      * @param int $storeId
      * @return $this
      */

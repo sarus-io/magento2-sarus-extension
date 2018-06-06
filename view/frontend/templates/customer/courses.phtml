@@ -3,11 +3,9 @@
  * Copyright © Sarus, LLC. All rights reserved.
  */
 
-/** @var $block Magento\Framework\View\Element\Template */
+/** @var $block \Sarus\Sarus\ViewModel\Courses */
 
-/** @var \Sarus\Sarus\ViewModel\CustomerCourses $viewModel */
-$viewModel = $block->getData('viewModel');
-$customerCourses = $viewModel->getCustomerCourses();
+$customerCourses = $block->getCustomerCourses();
 ?>
 <ul>
     <?php if (empty($customerCourses)): ?>
@@ -17,7 +15,7 @@ $customerCourses = $viewModel->getCustomerCourses();
             <li>
                 <h4><?php echo $block->escapeHtml($courseData['title']) ?></h4>
 
-                <img src="<?php echo $viewModel->getCourseImageUrl($courseData) ?>" />
+                <img src="<?php echo $block->getCourseImageUrl($courseData) ?>" />
 
                 <?php if (!empty($courseData['description'])): ?>
                     <p><?php echo $courseData['description'] ?></p>

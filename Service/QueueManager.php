@@ -40,7 +40,7 @@ class QueueManager
     }
 
     /**
-     * @param int $storeId
+     * @param int|null $storeId
      * @return void
      */
     public function sendPendingSubmissions($storeId = null)
@@ -57,14 +57,14 @@ class QueueManager
     }
 
     /**
-     * @param null $storeId
+     * @param int|null $storeId
      * @return void
      */
     public function sendFailedSubmissions($storeId = null)
     {
         /** @var \Sarus\Sarus\Model\ResourceModel\Submission\Collection $submissionCollection */
         $submissionCollection = $this->submissionCollectionFactory->create();
-        $submissionCollection->filterStatus(SubmissionRecord::STATUS_ERROR);
+        $submissionCollection->filterStatus(SubmissionRecord::STATUS_FAIL);
 
         if ($storeId) {
             $submissionCollection->filterStore($storeId);
@@ -76,5 +76,20 @@ class QueueManager
         }
 
         $this->queue->sendSubmissions($submissionCollection);
+    }
+
+    /**
+     * @param int[] $submissionIds
+     * @return int
+     */
+    public function sendByIds(array $submissionIds)
+    {
+        /** @var \Sarus\Sarus\Model\ResourceModel\Submission\Collection $submissionCollection */
+        $submissionCollection = $this->submissionCollectionFactory->create();
+        if ($submissionIds) {
+            $submissionCollection->filterSubmissionIds($submissionIds);
+        }
+
+        return $this->queue->sendSubmissions($submissionCollection);
     }
 }

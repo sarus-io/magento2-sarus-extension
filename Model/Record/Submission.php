@@ -19,16 +19,16 @@ use Sarus\Sarus\Model\ResourceModel\Submission as SubmissionResource;
  * @method $this setStatus($status)
  * @method string getErrorMessage()
  * @method $this setErrorMessage($errorMessage)
- * @method string getCreateAt()
- * @method $this setCreateAt($createAt)
- * @method string getSubmitAt()
- * @method $this setSubmitAt($submitAt)
+ * @method string getCreatingTime()
+ * @method $this setCreatingTime($creatingTime)
+ * @method string getSubmissionTime()
+ * @method $this setSubmissionTime($submissionTime)
  */
 class Submission extends AbstractModel
 {
     const STATUS_PENDING = 'pending';
     const STATUS_DONE = 'done';
-    const STATUS_ERROR = 'error';
+    const STATUS_FAIL = 'fail';
 
     /**
      * @return void

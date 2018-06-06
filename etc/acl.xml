@@ -8,6 +8,11 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::system">
+                    <resource id="Sarus_Sarus::sarus_menu" title="Sarus Menu">
+                        <resource id="Sarus_Sarus::queue" title="Sarus Queue" translate="true" sortOrder="20"/>
+                    </resource>
+                </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">

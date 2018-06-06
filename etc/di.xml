@@ -15,4 +15,18 @@
     <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
         <plugin name="sarus_order_item" type="Sarus\Sarus\Plugin\Quote\Item\ToOrderItem"/>
     </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sarus_submission_list_data_source" xsi:type="string">Sarus\Sarus\Model\ResourceModel\Submission\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Sarus\Sarus\Model\ResourceModel\Submission\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="const">Sarus\Sarus\Model\ResourceModel\Submission::TABLE_NAME</argument>
+            <argument name="resourceModel" xsi:type="string">Sarus\Sarus\Model\ResourceModel\Submission</argument>
+        </arguments>
+    </virtualType>
 </config>

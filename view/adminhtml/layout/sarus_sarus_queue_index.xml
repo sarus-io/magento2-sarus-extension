@@ -5,10 +5,10 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <update handle="customer_account"/>
     <body>
         <referenceContainer name="content">
-            <block class="Sarus\Sarus\Block\Customer\Courses" name="sarus.customer.courses" template="Sarus_Sarus::customer/courses.phtml" cacheable="false"/>
+            <uiComponent name="sarus_submission_list"/>
         </referenceContainer>
+        <referenceContainer name="admin.scope.col.wrap" htmlClass="admin__old" />
     </body>
 </page>
