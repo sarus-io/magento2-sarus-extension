@@ -18,6 +18,11 @@ class ProductDeleteBefore implements ObserverInterface
     private $configGeneral;
 
     /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
+    private $productRepository;
+
+    /**
      * @var \Magento\Store\Api\WebsiteRepositoryInterface
      */
     private $websiteRepository;
@@ -44,6 +49,7 @@ class ProductDeleteBefore implements ObserverInterface
 
     /**
      * @param \Sarus\Sarus\Model\Config\General $configGeneral
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param \Magento\Store\Api\WebsiteRepositoryInterface $websiteRepository
      * @param \Sarus\Sarus\Helper\Product $productHelper
      * @param \Sarus\Sarus\Service\Platform $platform
@@ -52,6 +58,7 @@ class ProductDeleteBefore implements ObserverInterface
      */
     public function __construct(
         \Sarus\Sarus\Model\Config\General $configGeneral,
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Store\Api\WebsiteRepositoryInterface $websiteRepository,
         \Sarus\Sarus\Helper\Product $productHelper,
         \Sarus\Sarus\Service\Platform $platform,
@@ -59,6 +66,7 @@ class ProductDeleteBefore implements ObserverInterface
         \Psr\Log\LoggerInterface $logger
     ) {
         $this->configGeneral = $configGeneral;
+        $this->productRepository = $productRepository;
         $this->websiteRepository = $websiteRepository;
         $this->productHelper = $productHelper;
         $this->platform = $platform;
@@ -74,6 +82,7 @@ class ProductDeleteBefore implements ObserverInterface
     {
         /** @var \Magento\Catalog\Model\Product $product */
         $product = $observer->getData('product');
+        $product = $this->productRepository->getById($product->getId());
 
         if (!$this->productHelper->isSarus($product)) {
             return;

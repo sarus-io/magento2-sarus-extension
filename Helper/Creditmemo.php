@@ -37,7 +37,7 @@ class Creditmemo
             }
 
             $orderItemSarus = $this->orderItemAttributeManagement->getForOrderItem($orderItem);
-            if (!$orderItemSarus->getCourseUuid()) {
+            if ($orderItemSarus->getCourseUuid()) {
                 $uuids[] = $orderItemSarus->getCourseUuid();
             }
         }

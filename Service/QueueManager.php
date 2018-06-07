@@ -6,6 +6,7 @@
 namespace Sarus\Sarus\Service;
 
 use Sarus\Sarus\Model\Record\Submission as SubmissionRecord;
+use Sarus\Sarus\Model\ResourceModel\Submission\Collection as  SubmissionCollection;
 
 class QueueManager
 {
@@ -48,6 +49,7 @@ class QueueManager
         /** @var \Sarus\Sarus\Model\ResourceModel\Submission\Collection $submissionCollection */
         $submissionCollection = $this->submissionCollectionFactory->create();
         $submissionCollection->filterStatus(SubmissionRecord::STATUS_PENDING);
+        $submissionCollection->setOrder('entity_id', SubmissionCollection::SORT_ORDER_ASC);
 
         if ($storeId) {
             $submissionCollection->filterStore($storeId);
@@ -65,6 +67,7 @@ class QueueManager
         /** @var \Sarus\Sarus\Model\ResourceModel\Submission\Collection $submissionCollection */
         $submissionCollection = $this->submissionCollectionFactory->create();
         $submissionCollection->filterStatus(SubmissionRecord::STATUS_FAIL);
+        $submissionCollection->setOrder('entity_id', SubmissionCollection::SORT_ORDER_ASC);
 
         if ($storeId) {
             $submissionCollection->filterStore($storeId);
@@ -81,14 +84,18 @@ class QueueManager
     /**
      * @param int[] $submissionIds
      * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function sendByIds(array $submissionIds)
     {
+        if (empty($submissionIds)) {
+            throw new \InvalidArgumentException('$submissionIds cannot be empty.');
+        }
+
         /** @var \Sarus\Sarus\Model\ResourceModel\Submission\Collection $submissionCollection */
         $submissionCollection = $this->submissionCollectionFactory->create();
-        if ($submissionIds) {
-            $submissionCollection->filterSubmissionIds($submissionIds);
-        }
+        $submissionCollection->filterSubmissionIds($submissionIds);
+        $submissionCollection->setOrder('entity_id', SubmissionCollection::SORT_ORDER_ASC);
 
         return $this->queue->sendSubmissions($submissionCollection);
     }

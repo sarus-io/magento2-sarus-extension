@@ -11,6 +11,9 @@
     <event name="sales_order_place_after">
         <observer name="sarus_register_course" instance="Sarus\Sarus\Observer\Order\PlaceAfter" />
     </event>
+    <event name="sales_order_creditmemo_refund">
+        <observer name="sarus_deactivate_course" instance="Sarus\Sarus\Observer\Order\Refund"/>
+    </event>
     <event name="catalog_product_delete_before">
         <observer name="sarus_unlinked_course" instance="Sarus\Sarus\Observer\Catalog\ProductDeleteBefore" />
     </event>
