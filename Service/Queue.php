@@ -7,6 +7,7 @@ namespace Sarus\Sarus\Service;
 
 use Sarus\Sarus\Model\Record\Submission as SubmissionRecord;
 use Sarus\Client\Exception\HttpException as SarusHttpException;
+use Sarus\Request\CustomRequest as SarusCustomRequest;
 
 class Queue
 {
@@ -36,6 +37,11 @@ class Queue
     private $platform;
 
     /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    private $jsonSerializer;
+
+    /**
      * @var \Sarus\Sarus\Model\FailNotification
      */
     private $failNotification;
@@ -46,6 +52,7 @@ class Queue
      * @param \Sarus\Sarus\Model\ResourceModel\Submission\CollectionFactory $submissionCollectionFactory
      * @param \Sarus\Sarus\Model\ResourceModel\Submission $submissionResource
      * @param \Sarus\Sarus\Service\Platform $platform
+     * @param \Magento\Framework\Serialize\Serializer\Json $jsonSerializer
      * @param \Sarus\Sarus\Model\FailNotification $failNotification
      */
     public function __construct(
@@ -54,6 +61,7 @@ class Queue
         \Sarus\Sarus\Model\ResourceModel\Submission\CollectionFactory $submissionCollectionFactory,
         \Sarus\Sarus\Model\ResourceModel\Submission $submissionResource,
         \Sarus\Sarus\Service\Platform $platform,
+        \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
         \Sarus\Sarus\Model\FailNotification $failNotification
     ) {
         $this->configApi = $configApi;
@@ -61,6 +69,7 @@ class Queue
         $this->submissionCollectionFactory = $submissionCollectionFactory;
         $this->submissionResource = $submissionResource;
         $this->platform = $platform;
+        $this->jsonSerializer = $jsonSerializer;
         $this->failNotification = $failNotification;
     }
 
@@ -74,7 +83,7 @@ class Queue
         /** @var \Sarus\Sarus\Model\Record\Submission $submissionRecord */
         $submissionRecord = $this->submissionRecordFactory->create();
 
-        $submissionRecord->setRequest(serialize($sarusRequest));
+        $submissionRecord->setRequest($this->jsonSerializer->serialize($sarusRequest));
         $submissionRecord->setStoreId($storeId);
         $submissionRecord->setCounter(0);
         $submissionRecord->setStatus(SubmissionRecord::STATUS_PENDING);
@@ -104,8 +113,11 @@ class Queue
     private function processSubmissionRecord($submissionRecord)
     {
         $storeId = $submissionRecord->getStoreId();
+
+        $sarusRequestData = $this->jsonSerializer->unserialize($submissionRecord->getRequest());
+
         /** @var \Sarus\Request $sarusRequest */
-        $sarusRequest = unserialize($submissionRecord->getRequest());
+        $sarusRequest = SarusCustomRequest::fromArray($sarusRequestData);
 
         try {
             $this->platform->sendRequest($sarusRequest, $storeId);
