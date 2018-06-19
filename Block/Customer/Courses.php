@@ -47,7 +47,11 @@ class Courses extends \Magento\Framework\View\Element\Template
      */
     public function getCustomerCourses()
     {
-        $sarusResponse = $this->platform->getSdk()->listEnrollments($this->getCustomerEmail());
+        try {
+            $sarusResponse = $this->platform->getSdk()->listEnrollments($this->getCustomerEmail());
+        } catch (\Exception $e) {
+            return [];
+        }
         return (array)$sarusResponse->get('data') ?: [];
     }
 
