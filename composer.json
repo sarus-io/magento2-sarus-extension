@@ -14,10 +14,14 @@
     {
       "type": "composer",
       "url": "https://repo.magento.com/"
+    },
+    {
+      "type": "git",
+      "url": "https://5bbd6eebf4390a5e07d93391b96f8b509398a813:x-oauth-basic@github.com/riselms/sarus-sdk-php"
     }
   ],
   "require": {
-    "riselms/sarus-sdk-php": "^1.0"
+    "sarus/sarus-sdk-php": "^1.0"
   },
   "autoload": {
     "files": ["registration.php"],
