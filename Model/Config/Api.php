@@ -10,6 +10,8 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 
 class Api
 {
+    const XML_PATH_BASE_URI = 'sarus/api/base_uri';
+
     const XML_PATH_AUTH_TOKEN = 'sarus/api/auth_token';
 
     const XML_PATH_LOG_FILENAME = 'sarus/api/log_filename';
@@ -44,6 +46,15 @@ class Api
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->directoryList = $directoryList;
+    }
+
+    /**
+     * @param string|null $storeId
+     * @return string
+     */
+    public function getBaseUri($storeId = null)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_BASE_URI, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**

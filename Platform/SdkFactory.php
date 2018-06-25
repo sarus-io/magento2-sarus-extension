@@ -56,7 +56,8 @@ class SdkFactory
 
         $sdkConfig = array_merge(
             [
-                self::CONFIG_SECRET => $this->configApi->getAuthToken($store),
+                self::CONFIG_SECRET   => $this->configApi->getAuthToken($store),
+                self::CONFIG_BASE_URI => $this->configApi->getBaseUri($store) ?: SarusConfig::DEFAULT_BASE_URI,
             ],
             $config
         );
