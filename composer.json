@@ -1,5 +1,5 @@
 {
-  "name": "sarus/magento2-sarus",
+  "name": "sarus-io/magento2_sarus_extension",
   "description": "Magento 2 extension - Sarus",
   "version": "1.0.0-rc1",
   "type": "magento2-module",
@@ -17,11 +17,11 @@
     },
     {
       "type": "git",
-      "url": "https://5bbd6eebf4390a5e07d93391b96f8b509398a813:x-oauth-basic@github.com/riselms/sarus-sdk-php"
+      "url": "https://5bbd6eebf4390a5e07d93391b96f8b509398a813:x-oauth-basic@github.com/sarus-io/sarus-sdk-php"
     }
   ],
   "require": {
-    "sarus/sarus-sdk-php": "^1.0"
+    "sarus-io/sarus-sdk-php": "^1.0"
   },
   "autoload": {
     "files": ["registration.php"],
