@@ -86,15 +86,13 @@ class QueueManager
      * @return int
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function sendByIds(array $submissionIds)
+    public function sendByIds(array $submissionIds = [])
     {
-        if (empty($submissionIds)) {
-            throw new \InvalidArgumentException('$submissionIds cannot be empty.');
-        }
-
         /** @var \Sarus\Sarus\Model\ResourceModel\Submission\Collection $submissionCollection */
         $submissionCollection = $this->submissionCollectionFactory->create();
-        $submissionCollection->filterSubmissionIds($submissionIds);
+        if (!empty($submissionIds)) {
+            $submissionCollection->filterSubmissionIds($submissionIds);
+        }
         $submissionCollection->setOrder('entity_id', SubmissionCollection::SORT_ORDER_ASC);
 
         return $this->queue->sendSubmissions($submissionCollection);
