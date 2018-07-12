@@ -1,0 +1,14 @@
+<?php
+/**
+ * Copyright © Sarus, LLC. All rights reserved.
+ */
+
+/** @var $block \Sarus\Sarus\Block\Checkout\Success */
+
+$sarusSuccessBlockHtml = $block->getSarusStaticBlockHtml();
+?>
+<?php if ($sarusSuccessBlockHtml): ?>
+    <?php echo $sarusSuccessBlockHtml ?>
+<?php elseif ($block->isMyCoursesEnabled()): ?>
+    <div><?php echo __('Click here to view <a href="%sarus_products_url">My Courses</a>', ['sarus_products_url' => $block->getSarusProductsUrl()]) ?></div>
+<?php endif; ?>
