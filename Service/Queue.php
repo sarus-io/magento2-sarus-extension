@@ -76,7 +76,18 @@ class Queue
     /**
      * @param \Sarus\Request $sarusRequest
      * @param int $storeId
-     * @return void
+     * @return bool
+     */
+    public function sendRequest(\Sarus\Request $sarusRequest, $storeId)
+    {
+        $submissionRecord = $this->addRequest($sarusRequest, $storeId);
+        return $this->sendSubmissionRecord($submissionRecord);
+    }
+
+    /**
+     * @param \Sarus\Request $sarusRequest
+     * @param int $storeId
+     * @return \Sarus\Sarus\Model\Record\Submission
      */
     public function addRequest(\Sarus\Request $sarusRequest, $storeId)
     {
@@ -89,6 +100,7 @@ class Queue
         $submissionRecord->setStatus(SubmissionRecord::STATUS_PENDING);
 
         $this->submissionResource->save($submissionRecord);
+        return $submissionRecord;
     }
 
     /**
@@ -100,7 +112,7 @@ class Queue
         $counter = 0;
         /** @var \Sarus\Sarus\Model\Record\Submission $submissionRecord */
         foreach ($submissionCollection as $submissionRecord) {
-            $counter += $this->processSubmissionRecord($submissionRecord) ? 1 : 0;
+            $counter += $this->sendSubmissionRecord($submissionRecord) ? 1 : 0;
         }
 
         return $counter;
@@ -110,7 +122,7 @@ class Queue
      * @param \Sarus\Sarus\Model\Record\Submission $submissionRecord
      * @return bool
      */
-    private function processSubmissionRecord($submissionRecord)
+    private function sendSubmissionRecord($submissionRecord)
     {
         $storeId = $submissionRecord->getStoreId();
 

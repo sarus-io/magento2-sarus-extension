@@ -61,7 +61,7 @@ class PlaceAfter implements ObserverInterface
         }
 
         $sarusRequest = new SarusPurchase($sarusProductUuids, $this->createSarusUser($order));
-        $this->queue->addRequest($sarusRequest, $order->getStoreId());
+        $this->queue->sendRequest($sarusRequest, $order->getStoreId());
     }
 
     /**

@@ -60,6 +60,6 @@ class Refund implements ObserverInterface
         }
 
         $sarusRequest = new SarusDeactivate($creditmemo->getOrder()->getCustomerEmail(), $sarusProductUuids);
-        $this->queue->addRequest($sarusRequest, $creditmemo->getStoreId());
+        $this->queue->sendRequest($sarusRequest, $creditmemo->getStoreId());
     }
 }
