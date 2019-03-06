@@ -1,7 +1,7 @@
 {
   "name": "sarus-io/magento2-sarus-extension",
   "description": "Magento 2 extension - Sarus",
-  "version": "1.0.0-rc1",
+  "version": "1.0.0",
   "type": "magento2-module",
   "license": "proprietary",
   "authors": [
